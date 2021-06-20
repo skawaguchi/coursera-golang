@@ -21,6 +21,18 @@ func setup() (reader io.Reader, writer os.File) {
 	return io.Reader(readerVal), *writerVal
 }
 
+func teardownAndGetOutput(reader io.Reader, writer os.File) (output string) {
+	writer.Close()
+
+	outputVal, _ := ioutil.ReadAll(reader)
+
+	strOutput := string(outputVal)
+
+	os.Stdout = origStdOut
+
+	return strOutput
+}
+
 func TestWrongFirstChar(t *testing.T) {
 	reader, writer := setup()
 
@@ -29,15 +41,9 @@ func TestWrongFirstChar(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -50,15 +56,9 @@ func TestWrongMidChar(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -71,15 +71,9 @@ func TestWrongLastChar(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -92,15 +86,9 @@ func TestIncorrectChar1(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -113,15 +101,9 @@ func TestIncorrectChar2(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -134,15 +116,9 @@ func TestIncorrectChar3(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, INVALID_MSG) {
+	if !strings.Contains(output, INVALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
 	}
 }
@@ -155,15 +131,9 @@ func TestCorrectChar1(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, VALID_MSG) {
+	if !strings.Contains(output, VALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
 	}
 }
@@ -176,15 +146,9 @@ func TestCorrectChar2(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, VALID_MSG) {
+	if !strings.Contains(output, VALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
 	}
 }
@@ -197,15 +161,9 @@ func TestCorrectChar3(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, VALID_MSG) {
+	if !strings.Contains(output, VALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
 	}
 }
@@ -218,15 +176,9 @@ func TestCorrectChar4(t *testing.T) {
 
 	Find(scanner)
 
-	writer.Close()
+	output := teardownAndGetOutput(reader, writer)
 
-	output, _ := ioutil.ReadAll(reader)
-
-	strOutput := string(output)
-
-	os.Stdout = origStdOut
-
-	if !strings.Contains(strOutput, VALID_MSG) {
+	if !strings.Contains(output, VALID_MSG) {
 		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
 	}
 }
