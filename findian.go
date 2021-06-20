@@ -53,7 +53,7 @@ func hasValidString(chars []string) bool {
 	hasCorrectMidChar := false
 
 	for i := 0; i < len(chars); i++ {
-		char := chars[i]
+		char := strings.ToLower(chars[i])
 
 		if i == 0 {
 			if char != EXPECTED_FIRST_CHAR {
