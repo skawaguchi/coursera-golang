@@ -2,19 +2,27 @@ package main
 
 import (
 	"bufio"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
 )
 
-func TestWrongFirstChar(t *testing.T) {
-	// https://medium.com/@hau12a1/golang-capturing-log-println-and-fmt-println-output-770209c791b4
-	// https://stackoverflow.com/questions/47281081/how-to-test-method-that-prints-to-console-in-golang/47281683
+// https://medium.com/@hau12a1/golang-capturing-log-println-and-fmt-println-output-770209c791b4
+// https://stackoverflow.com/questions/47281081/how-to-test-method-that-prints-to-console-in-golang/47281683
 
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+var origStdOut = os.Stdout
+
+func setup() (reader io.Reader, writer os.File) {
+	readerVal, writerVal, _ := os.Pipe()
+	os.Stdout = writerVal
+
+	return io.Reader(readerVal), *writerVal
+}
+
+func TestWrongFirstChar(t *testing.T) {
+	reader, writer := setup()
 
 	input := "x"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -35,9 +43,7 @@ func TestWrongFirstChar(t *testing.T) {
 }
 
 func TestWrongMidChar(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "ix"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -58,9 +64,7 @@ func TestWrongMidChar(t *testing.T) {
 }
 
 func TestWrongLastChar(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "iax"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -81,9 +85,7 @@ func TestWrongLastChar(t *testing.T) {
 }
 
 func TestIncorrectChar1(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "ihhhhhn"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -104,9 +106,7 @@ func TestIncorrectChar1(t *testing.T) {
 }
 
 func TestIncorrectChar2(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "ina"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -127,9 +127,7 @@ func TestIncorrectChar2(t *testing.T) {
 }
 
 func TestIncorrectChar3(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "xian"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -150,9 +148,7 @@ func TestIncorrectChar3(t *testing.T) {
 }
 
 func TestCorrectChar1(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "ian"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -173,9 +169,7 @@ func TestCorrectChar1(t *testing.T) {
 }
 
 func TestCorrectChar2(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "Ian"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -196,9 +190,7 @@ func TestCorrectChar2(t *testing.T) {
 }
 
 func TestCorrectChar3(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "iuiygaygn"
 	scanner := bufio.NewScanner(strings.NewReader(input))
@@ -219,9 +211,7 @@ func TestCorrectChar3(t *testing.T) {
 }
 
 func TestCorrectChar4(t *testing.T) {
-	origStdOut := os.Stdout
-	reader, writer, _ := os.Pipe()
-	os.Stdout = writer
+	reader, writer := setup()
 
 	input := "I d skd a efju N"
 	scanner := bufio.NewScanner(strings.NewReader(input))
