@@ -17,26 +17,42 @@ import (
 	"strings"
 )
 
-var EXPECTED_FIRST_CHAR = "i"
-var EXPECTED_MID_CHAR = "a"
-var EXPECTED_LAST_CHAR = "n"
-
 func main() {
-	startingError := errors.New("You must start your string with 'i'.")
-	midError := errors.New("Your string must have an 'a' somewhere in the middle of it.")
-	endError := errors.New("Your string must have end with 'n'.")
+	scanner := bufio.NewScanner(os.Stdin)
+	findIan(scanner)
+}
+
+func findIan(scanner *bufio.Scanner) {
 
 	fmt.Println("Please enter a string starting with 'i', ending in 'n', and containing 'a'.")
-
-	scanner := bufio.NewScanner(os.Stdin)
 
 	scanner.Scan()
 
 	chars := strings.Split(scanner.Text(), "")
 
-	hasCorrectFirstChar := false
+	isValid := hasValidString(chars)
+
+	if isValid == true {
+		fmt.Println("You've entered a valid string. Yay!")
+	} else {
+		fmt.Println("Sorry. You entered an invalid string. Please try again.")
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "Reading stdin", err)
+	}
+}
+
+var EXPECTED_FIRST_CHAR = "i"
+var EXPECTED_MID_CHAR = "a"
+var EXPECTED_LAST_CHAR = "n"
+
+func hasValidString(chars []string) bool {
+	startingError := errors.New("You must start your string with 'i'.")
+	midError := errors.New("Your string must have an 'a' somewhere in the middle of it.")
+	endError := errors.New("Your string must have end with 'n'.")
+
 	hasCorrectMidChar := false
-	hasCorrectLastChar := false
 
 	for i := 0; i < len(chars); i++ {
 		char := chars[i]
@@ -44,19 +60,15 @@ func main() {
 		if i == 0 {
 			if char != EXPECTED_FIRST_CHAR {
 				fmt.Println(startingError)
-				return
-			} else {
-				hasCorrectFirstChar = true
+				return false
 			}
 		} else if i == len(chars)-1 {
 			if hasCorrectMidChar != true {
 				fmt.Println(midError)
-				return
+				return false
 			} else if char != EXPECTED_LAST_CHAR {
 				fmt.Println(endError)
-				return
-			} else {
-				hasCorrectLastChar = true
+				return false
 			}
 		} else if i < len(chars)-1 {
 			if char == EXPECTED_MID_CHAR {
@@ -64,12 +76,5 @@ func main() {
 			}
 		}
 	}
-
-	if hasCorrectFirstChar && hasCorrectMidChar && hasCorrectLastChar {
-		fmt.Println("You've entered a valid string. Yay!")
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "Reading stdin", err)
-	}
+	return true
 }
