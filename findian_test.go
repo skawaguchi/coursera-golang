@@ -60,30 +60,30 @@ func TestWrongLastChar(t *testing.T) {
 	assertInput(t, "iax", INVALID_MSG)
 }
 
-func TestIncorrectChar1(t *testing.T) {
+func TestIncorrectRepeatedMidChars(t *testing.T) {
 	assertInput(t, "ihhhhhn", INVALID_MSG)
 }
 
-func TestIncorrectChar2(t *testing.T) {
+func TestIncorrectSingleMidChar(t *testing.T) {
 	assertInput(t, "ina", INVALID_MSG)
 }
 
-func TestIncorrectChar3(t *testing.T) {
+func TestIncorrectStartingWithOtherwiseCorrectChars(t *testing.T) {
 	assertInput(t, "xian", INVALID_MSG)
 }
 
-func TestCorrectChar1(t *testing.T) {
+func TestCorrectMinimalChars(t *testing.T) {
 	assertInput(t, "ian", VALID_MSG)
 }
 
-func TestCorrectChar2(t *testing.T) {
+func TestCorrectWithUppercaseChars(t *testing.T) {
 	assertInput(t, "Ian", VALID_MSG)
 }
 
-func TestCorrectChar3(t *testing.T) {
+func TestCorrectVariedChars(t *testing.T) {
 	assertInput(t, "iuiygaygn", VALID_MSG)
 }
 
-func TestCorrectChar4(t *testing.T) {
+func TestCorrectVariedWithSpacesChars(t *testing.T) {
 	assertInput(t, "I d skd a efju N", VALID_MSG)
 }
