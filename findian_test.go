@@ -33,152 +33,57 @@ func teardownAndGetOutput(reader io.Reader, writer os.File) (output string) {
 	return strOutput
 }
 
-func TestWrongFirstChar(t *testing.T) {
+func assertInput(t *testing.T, testInput string, expectedMessage string) {
 	reader, writer := setup()
 
-	input := "x"
+	input := testInput
 	scanner := bufio.NewScanner(strings.NewReader(input))
 
 	Find(scanner)
 
 	output := teardownAndGetOutput(reader, writer)
 
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
+	if !strings.Contains(output, expectedMessage) {
+		t.Errorf("output did NOT contain expected message %q", expectedMessage)
 	}
+}
+
+func TestWrongFirstChar(t *testing.T) {
+	assertInput(t, "x", INVALID_MSG)
 }
 
 func TestWrongMidChar(t *testing.T) {
-	reader, writer := setup()
-
-	input := "ix"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
-	}
+	assertInput(t, "ix", INVALID_MSG)
 }
 
 func TestWrongLastChar(t *testing.T) {
-	reader, writer := setup()
-
-	input := "iax"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
-	}
+	assertInput(t, "iax", INVALID_MSG)
 }
 
 func TestIncorrectChar1(t *testing.T) {
-	reader, writer := setup()
-
-	input := "ihhhhhn"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
-	}
+	assertInput(t, "ihhhhhn", INVALID_MSG)
 }
 
 func TestIncorrectChar2(t *testing.T) {
-	reader, writer := setup()
-
-	input := "ina"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
-	}
+	assertInput(t, "ina", INVALID_MSG)
 }
 
 func TestIncorrectChar3(t *testing.T) {
-	reader, writer := setup()
-
-	input := "xian"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, INVALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", INVALID_MSG)
-	}
+	assertInput(t, "xian", INVALID_MSG)
 }
 
 func TestCorrectChar1(t *testing.T) {
-	reader, writer := setup()
-
-	input := "ian"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, VALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
-	}
+	assertInput(t, "ian", VALID_MSG)
 }
 
 func TestCorrectChar2(t *testing.T) {
-	reader, writer := setup()
-
-	input := "Ian"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, VALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
-	}
+	assertInput(t, "Ian", VALID_MSG)
 }
 
 func TestCorrectChar3(t *testing.T) {
-	reader, writer := setup()
-
-	input := "iuiygaygn"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, VALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
-	}
+	assertInput(t, "iuiygaygn", VALID_MSG)
 }
 
 func TestCorrectChar4(t *testing.T) {
-	reader, writer := setup()
-
-	input := "I d skd a efju N"
-	scanner := bufio.NewScanner(strings.NewReader(input))
-
-	Find(scanner)
-
-	output := teardownAndGetOutput(reader, writer)
-
-	if !strings.Contains(output, VALID_MSG) {
-		t.Errorf("output did NOT contain expected message %q", VALID_MSG)
-	}
+	assertInput(t, "I d skd a efju N", VALID_MSG)
 }
