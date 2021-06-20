@@ -1,12 +1,3 @@
-/*
-Write a program which prompts the user to enter a string. The program searches through the entered string for the characters ‘i’, ‘a’, and ‘n’. The program should print “Found!” if the entered string starts with the character ‘i’, ends with the character ‘n’, and contains the character ‘a’. The program should print “Not Found!” otherwise. The program should not be case-sensitive, so it does not matter if the characters are upper-case or lower-case.
-
-Examples: The program should print “Found!” for the following example entered strings, “ian”, “Ian”, “iuiygaygn”, “I d skd a efju N”. The program should print “Not Found!” for the following strings, “ihhhhhn”, “ina”, “xian”.
-
-Submit your source code for the program,
-“findian.go”.
-*/
-
 package main
 
 import (
@@ -19,10 +10,13 @@ import (
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	findIan(scanner)
+	Find(scanner)
 }
 
-func findIan(scanner *bufio.Scanner) {
+var VALID_MSG = "Found!"
+var INVALID_MSG = "Not Found!"
+
+func Find(scanner *bufio.Scanner) {
 
 	fmt.Println("Please enter a string starting with 'i', ending in 'n', and containing 'a'.")
 
@@ -32,10 +26,10 @@ func findIan(scanner *bufio.Scanner) {
 
 	isValid := hasValidString(chars)
 
-	if isValid == true {
-		fmt.Println("You've entered a valid string. Yay!")
+	if isValid {
+		fmt.Println(VALID_MSG)
 	} else {
-		fmt.Println("Sorry. You entered an invalid string. Please try again.")
+		fmt.Println(INVALID_MSG)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -47,10 +41,14 @@ var EXPECTED_FIRST_CHAR = "i"
 var EXPECTED_MID_CHAR = "a"
 var EXPECTED_LAST_CHAR = "n"
 
+var STARTING_ERROR_MSG = "you must start your string with 'i'"
+var MID_ERROR_MSG = "your string must have an 'a' somewhere in the middle of it"
+var LAST_ERROR_MSG = "your string must have end with 'n'"
+
 func hasValidString(chars []string) bool {
-	startingError := errors.New("You must start your string with 'i'.")
-	midError := errors.New("Your string must have an 'a' somewhere in the middle of it.")
-	endError := errors.New("Your string must have end with 'n'.")
+	startingError := errors.New(STARTING_ERROR_MSG)
+	midError := errors.New(MID_ERROR_MSG)
+	endError := errors.New(LAST_ERROR_MSG)
 
 	hasCorrectMidChar := false
 
@@ -63,7 +61,7 @@ func hasValidString(chars []string) bool {
 				return false
 			}
 		} else if i == len(chars)-1 {
-			if hasCorrectMidChar != true {
+			if !hasCorrectMidChar {
 				fmt.Println(midError)
 				return false
 			} else if char != EXPECTED_LAST_CHAR {
