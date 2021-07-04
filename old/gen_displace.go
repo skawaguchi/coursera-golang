@@ -133,6 +133,6 @@ func GenDisplaceFn(
 	initialDisplacement float64,
 ) func(float64) float64 {
 	return func(time float64) float64 {
-		return (acceleration/2)*math.Pow(time, 2) + math.Pow(initialVelocity, time)
+		return (math.Pow(time, 2) * acceleration / 2) + initialVelocity*time + initialDisplacement
 	}
 }
